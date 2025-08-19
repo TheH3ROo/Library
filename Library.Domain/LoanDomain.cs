@@ -31,5 +31,10 @@
 
             return loan;
         }
+        
+        public static void Return(Book book, Loan loan, DateTime now)
+        {
+            
+        }
     }
 }
