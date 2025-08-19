@@ -57,11 +57,9 @@ namespace Library.Tests
 
             var loanId = await svc.BorrowAsync(userId, book.Id, now);
 
-            // book frissült
             var updated = await books.GetByIdAsync(book.Id);
             Assert.False(updated!.IsAvailable);
 
-            // loan létrejött
             var saved = await loans.GetByIdAsync(loanId);
             Assert.NotNull(saved);
             Assert.Equal(book.Id, saved!.BookId);
@@ -95,7 +93,6 @@ namespace Library.Tests
 
             var loanId = await svc.BorrowAsync(userId, book.Id, now);
 
-            // előkészítés: könyv most unavailable
             var borrowedBook = await books.GetByIdAsync(book.Id);
             Assert.False(borrowedBook!.IsAvailable);
 
@@ -134,11 +131,9 @@ namespace Library.Tests
 
             var loanId = await svc.BorrowAsync(userId, book.Id, now);
 
-            // egy aktív van
             var active1 = await svc.ListActiveLoansAsync();
             Assert.Single(active1);
 
-            // visszahozzuk
             await svc.ReturnAsync(loanId, DateTime.UtcNow);
 
             var active2 = await svc.ListActiveLoansAsync();
