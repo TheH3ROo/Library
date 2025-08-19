@@ -4,7 +4,7 @@
     {
         public static Loan Borrow(Book book, Guid userId, DateTime now)
         {
-            if (book is null) throw new ArgumentNullException(nameof(book), "Book cannot be null.");
+            ArgumentNullException.ThrowIfNull(book);
 
             if (userId == Guid.Empty) throw new ArgumentException("User ID cannot be empty", nameof(userId));
 
