@@ -11,7 +11,7 @@ namespace Library.Tests
             Author = "Eric Evans",
             ISBN = "978-0321125217",
             PublishedYear = 2003,
-            IsAvailable = false // kölcsönben van
+            IsAvailable = false
         };
 
         private static Loan NewActiveLoan(Guid bookId, Guid userId, DateTime loanDateUtc) => new Loan
