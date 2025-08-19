@@ -1,6 +1,7 @@
-﻿using Library.Domain;
+﻿using Library.Application.Abstractions;
+using Library.Domain;
 
-namespace Library.Application
+namespace Library.Application.Services
 {
     public interface ILoanService
     {

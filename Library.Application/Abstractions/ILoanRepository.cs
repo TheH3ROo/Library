@@ -1,6 +1,6 @@
 ﻿using Library.Domain;
 
-namespace Library.Application
+namespace Library.Application.Abstractions
 {
     public interface ILoanRepository
     {

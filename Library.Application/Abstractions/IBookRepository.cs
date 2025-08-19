@@ -1,7 +1,6 @@
-﻿
-using Library.Domain;
+﻿using Library.Domain;
 
-namespace Library.Application
+namespace Library.Application.Abstractions
 {
     public interface IBookRepository
     {
