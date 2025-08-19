@@ -4,18 +4,20 @@ namespace Library.Tests
 {
     public class LoanDomainTests
     {
+        private static Book NewBook() => new Book
+        {
+            Id = Guid.NewGuid(),
+            Title = "Clean Code",
+            Author = "Robert C. Martin",
+            ISBN = "978-0132350884",
+            PublishedYear = 2008,
+            IsAvailable = false
+        };
+
         [Fact]
         public void Borrow_Throws_WhenBookNotAvailable()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = false
-            };
+            var book = NewBook();
 
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
@@ -29,15 +31,8 @@ namespace Library.Tests
         [Fact]
         public void Borrow_DoesNotThrow_WhenBookIsAvailable()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = true
-            };
+            var book = NewBook();
+            book.IsAvailable = true;
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
 
@@ -47,19 +42,10 @@ namespace Library.Tests
         [Fact]
         public void Borrow_SetsBookUnavailable_AndReturnsLoan()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Architecture",
-                Author = "Robert C. Martin",
-                ISBN = "9780134494166",
-                PublishedYear = 2017,
-                IsAvailable = true
-            };
-
+            var book = NewBook();
+            book.IsAvailable = true;
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
-
             var borrow = LoanDomain.Borrow(book, userId, now);
 
             Assert.NotNull(borrow);
@@ -67,8 +53,7 @@ namespace Library.Tests
             Assert.Equal(userId, borrow.UserId);
             Assert.Equal(now, borrow.LoanDate, precision: TimeSpan.FromSeconds(1));
             Assert.Null(borrow.ReturnDate);
-
-            Assert.False(book.IsAvailable); // könyv már nem elérhető
+            Assert.False(book.IsAvailable);
         }
 
         [Fact]
@@ -88,15 +73,7 @@ namespace Library.Tests
         [Fact]
         public void Borrow_Throws_WhenBookIsAvailableButUserIdIsEmpty()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = true
-            };
+            var book = NewBook();
             var userId = Guid.Empty;
             var now = DateTime.UtcNow;
 
@@ -109,16 +86,7 @@ namespace Library.Tests
         [Fact]
         public void Borrow_Throws_WhenBookIsAvailableAndNowIsDefault()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = true
-            };
-
+            var book = NewBook();
             var userId = Guid.NewGuid();
             var now = default(DateTime);
 
@@ -131,15 +99,7 @@ namespace Library.Tests
         [Fact]
         public void Borrow_Throws_WhenBookIsAvailableAndNowIsInTheFuture()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = true
-            };
+            var book = NewBook();
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow.AddDays(1);
             
@@ -152,16 +112,7 @@ namespace Library.Tests
         [Fact]
         public void Borrow_Throws_WhenBookIsAvailableAndNowIsInThePast()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = true
-            };
-
+            var book = NewBook();
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow.AddDays(-1);
 
@@ -174,16 +125,7 @@ namespace Library.Tests
         [Fact]
         public void Borrow_Throws_WhenBookIsAvailableAndNowIsYesterday()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = true
-            };
-
+            var book = NewBook();
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow.AddDays(-1).Date;
 
@@ -196,16 +138,7 @@ namespace Library.Tests
         [Fact]
         public void Borrow_Throws_WhenBookIsAvailableAndNowIsTomorrow()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = true
-            };
-
+            var book = NewBook();
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow.AddDays(1).Date;
 
@@ -218,16 +151,7 @@ namespace Library.Tests
         [Fact]
         public void Borrow_Throws_WhenBookIsAvailableAndNowIsLastYear()
         {
-            var book = new Book
-            {
-                Id = Guid.NewGuid(),
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "978-0132350884",
-                PublishedYear = 2008,
-                IsAvailable = true
-            };
-
+            var book = NewBook();
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow.AddYears(-1).Date;
 
