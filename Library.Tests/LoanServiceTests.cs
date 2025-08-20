@@ -7,28 +7,62 @@ namespace Library.Tests
 {
     public class LoanServiceTests
     {
-        // -------- Fakes --------
         private sealed class BookRepoFake : IBookRepository
         {
             private readonly ConcurrentDictionary<Guid, Book> _store = new();
             public void Seed(Book b) => _store[b.Id] = b;
             public Task<Book?> GetByIdAsync(Guid id, CancellationToken ct = default)
                 => Task.FromResult(_store.TryGetValue(id, out var b) ? b : null);
+
+            public Task<Guid> AddAsync(Book book, CancellationToken ct = default)
+            {
+                _store[book.Id] = book; return Task.FromResult(book.Id);
+            }
+
             public Task UpdateAsync(Book book, CancellationToken ct = default)
-            { _store[book.Id] = book; return Task.CompletedTask; }
+            {
+                _store[book.Id] = book; return Task.CompletedTask;
+            }
+
+            public Task DeleteAsync(Guid id, CancellationToken ct = default)
+            {
+                _store.TryRemove(id, out _); return Task.CompletedTask;
+            }
+
+            public Task<IReadOnlyList<Book>> ListAsync(bool? available = null, string? author = null, CancellationToken ct = default)
+            {
+                var q = _store.Values.AsQueryable();
+                if (available is not null) q = q.Where(b => b.IsAvailable == available.Value);
+                if (!string.IsNullOrWhiteSpace(author)) q = q.Where(b => b.Author.Contains(author, StringComparison.OrdinalIgnoreCase));
+                return Task.FromResult((IReadOnlyList<Book>)q.ToList());
+            }
         }
 
         private sealed class LoanRepoFake : ILoanRepository
         {
+            private readonly HashSet<(Guid bookId, Guid loanId)> _active = new();
             private readonly ConcurrentDictionary<Guid, Loan> _store = new();
             public Task<Loan?> GetByIdAsync(Guid id, CancellationToken ct = default)
                 => Task.FromResult(_store.TryGetValue(id, out var l) ? l : null);
             public Task<Guid> CreateAsync(Loan loan, CancellationToken ct = default)
-            { _store[loan.Id] = loan; return Task.FromResult(loan.Id); }
+            {
+                _store[loan.Id] = loan; return Task.FromResult(loan.Id);
+            }
             public Task UpdateAsync(Loan loan, CancellationToken ct = default)
-            { _store[loan.Id] = loan; return Task.CompletedTask; }
+            {
+                _store[loan.Id] = loan; return Task.CompletedTask;
+            }
+
+            public Task DeleteAsync(Guid id, CancellationToken ct = default)
+            {
+                _store.TryRemove(id, out _); return Task.CompletedTask;
+            }
+
             public Task<IReadOnlyList<Loan>> ListActiveAsync(CancellationToken ct = default)
                 => Task.FromResult((IReadOnlyList<Loan>)_store.Values.Where(l => l.ReturnDate is null).ToList());
+
+            public Task<bool> HasActiveLoanForBookAsync(Guid bookId, CancellationToken ct = default)
+                => Task.FromResult(_active.Any(a => a.bookId == bookId));
         }
 
         private static Book NewBook(bool available = true) => new Book
@@ -41,7 +75,7 @@ namespace Library.Tests
             IsAvailable = available
         };
 
-        // ---- TEST 1: Borrow happy path ----
+        // ---- Borrow happy path ----
         [Fact]
         public async Task BorrowAsync_MarksBookUnavailable_AndCreatesLoan()
         {
@@ -68,7 +102,7 @@ namespace Library.Tests
             Assert.Null(saved.ReturnDate);
         }
 
-        // ---- TEST 2: Borrow - book not found -> 404 (KeyNotFoundException) ----
+        // ---- Borrow - book not found -> 404 (KeyNotFoundException) ----
         [Fact]
         public async Task BorrowAsync_Throws_WhenBookNotFound()
         {
@@ -77,7 +111,7 @@ namespace Library.Tests
                 svc.BorrowAsync(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow));
         }
 
-        // ---- TEST 3: Return happy path ----
+        // ---- Return happy path ----
         [Fact]
         public async Task ReturnAsync_SetsReturnDate_AndMakesBookAvailable()
         {
@@ -107,7 +141,7 @@ namespace Library.Tests
             Assert.Equal(returnNow, updatedLoan.ReturnDate!.Value, precision: TimeSpan.FromSeconds(1));
         }
 
-        // ---- TEST 4: Return - loan not found ----
+        // ---- Return - loan not found ----
         [Fact]
         public async Task ReturnAsync_Throws_WhenLoanNotFound()
         {
@@ -116,7 +150,7 @@ namespace Library.Tests
                 svc.ReturnAsync(Guid.NewGuid(), DateTime.UtcNow));
         }
 
-        // ---- TEST 5: List active loans ----
+        // ---- List active loans ----
         [Fact]
         public async Task ListActiveLoansAsync_ReturnsOnlyActive()
         {

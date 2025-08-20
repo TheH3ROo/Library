@@ -27,4 +27,7 @@ public class LoanRepository(LibraryDbContext db) : ILoanRepository
 
     public async Task<IReadOnlyList<Loan>> ListActiveAsync(CancellationToken ct = default) =>
         await _db.Loans.Where(l => l.ReturnDate == null).ToListAsync(ct);
+
+    public async Task<bool> HasActiveLoanForBookAsync(Guid bookId, CancellationToken ct = default)
+    => await _db.Loans.AnyAsync(l => l.BookId == bookId && l.ReturnDate == null, ct);
 }

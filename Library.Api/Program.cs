@@ -1,4 +1,5 @@
 using Library.Application.Abstractions;
+using Library.Application.Books;
 using Library.Application.Services;
 using Library.Infrastructure.Data;
 using Library.Infrastructure.Repositories;
@@ -13,6 +14,7 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 
 builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 builder.Services.AddControllers();
 
