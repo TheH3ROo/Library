@@ -20,7 +20,7 @@ namespace Library.Api.Controllers
         public async Task<IActionResult> Borrow([FromBody] BorrowRequest request, CancellationToken ct)
         {
             var loanId = await _loanService.BorrowAsync(request.UserId, request.BookId, request.NowUtc, ct);
-            return CreatedAtAction(nameof(Borrow), new { id = loanId }, new { LoanId = loanId });
+            return CreatedAtAction(nameof(GetById), new { id = loanId }, new { LoanId = loanId });
         }
 
         /// <summary>Return a book</summary>
