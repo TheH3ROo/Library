@@ -10,8 +10,8 @@ public class BookRepository : IBookRepository
     private readonly LibraryDbContext _db;
     public BookRepository(LibraryDbContext db) => _db = db;
 
-    public async Task<Book?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
-        await _db.Books.FirstOrDefaultAsync(b => b.Id == id, ct);
+    public Task<Book?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
+        _db.Books.FirstOrDefaultAsync(b => b.Id == id, ct);
 
     public async Task<Guid> AddAsync(Book book, CancellationToken ct = default)
     {

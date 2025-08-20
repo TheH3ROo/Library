@@ -1,6 +1,7 @@
 using Library.Application.Abstractions;
 using Library.Application.Books;
 using Library.Application.Services;
+using Library.Application.Users;
 using Library.Infrastructure.Data;
 using Library.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,11 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 

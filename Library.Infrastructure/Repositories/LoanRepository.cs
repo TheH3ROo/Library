@@ -9,8 +9,8 @@ public class LoanRepository(LibraryDbContext db) : ILoanRepository
 {
     private readonly LibraryDbContext _db = db;
 
-    public async Task<Loan?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
-        await _db.Loans.FirstOrDefaultAsync(l => l.Id == id, ct);
+    public Task<Loan?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
+        _db.Loans.FirstOrDefaultAsync(l => l.Id == id, ct);
 
     public async Task<Guid> CreateAsync(Loan loan, CancellationToken ct = default)
     {
