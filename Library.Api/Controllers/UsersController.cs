@@ -16,22 +16,11 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] UserRequest req, CancellationToken ct)
     {
-        try
-        {
-            var id = await _users.RegisterAsync(
-                new UserCreateDto { Name = req.Name, Email = req.Email },
-                DateTime.UtcNow, ct);
+        var id = await _users.RegisterAsync(
+            new UserCreateDto { Name = req.Name, Email = req.Email },
+            DateTime.UtcNow, ct);
 
-            return CreatedAtAction(nameof(GetById), new { id }, new { id });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message, param = ex.ParamName });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Conflict(new { error = ex.Message });
-        }
+        return CreatedAtAction(nameof(GetById), new { id }, new { id });
     }
 
     [HttpGet]

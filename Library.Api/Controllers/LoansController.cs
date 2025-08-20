@@ -19,27 +19,8 @@ namespace Library.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Borrow([FromBody] BorrowRequest request, CancellationToken ct)
         {
-            try
-            {
-                var loanId = await _loanService.BorrowAsync(request.UserId, request.BookId, request.NowUtc, ct);
-                return CreatedAtAction(nameof(Borrow), new { id = loanId }, new { LoanId = loanId });
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { error = ex.Message });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { error = ex.Message, param = ex.ParamName });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(new { error = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An unexpected error occurred. {ex.Message}");
-            }
+            var loanId = await _loanService.BorrowAsync(request.UserId, request.BookId, request.NowUtc, ct);
+            return CreatedAtAction(nameof(Borrow), new { id = loanId }, new { LoanId = loanId });
         }
 
         /// <summary>Return a book</summary>
@@ -49,23 +30,8 @@ namespace Library.Api.Controllers
             if (id != request.LoanId)
                 return BadRequest(new { error = "Route id and body LoanId mismatch" });
 
-            try
-            {
-                await _loanService.ReturnAsync(request.LoanId, request.NowUtc, ct);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { error = ex.Message });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { error = ex.Message, param = ex.ParamName });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(new { error = ex.Message });
-            }
+            await _loanService.ReturnAsync(request.LoanId, request.NowUtc, ct);
+            return NoContent();
         }
 
         /// <summary>List active loans</summary>

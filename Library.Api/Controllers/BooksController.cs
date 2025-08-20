@@ -16,65 +16,36 @@ public class BooksController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] BookRequest req, CancellationToken ct)
     {
-        try
+        var id = await _books.CreateAsync(new BookCreateDto
         {
-            var id = await _books.CreateAsync(new BookCreateDto
-            {
-                Title = req.Title,
-                Author = req.Author,
-                ISBN = req.ISBN,
-                PublishedYear = req.PublishedYear
-            }, ct);
+            Title = req.Title,
+            Author = req.Author,
+            ISBN = req.ISBN,
+            PublishedYear = req.PublishedYear
+        }, ct);
 
-            return CreatedAtAction(nameof(GetById), new { id }, new { id });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message, param = ex.ParamName });
-        }
+        return CreatedAtAction(nameof(GetById), new { id }, new { id });
     }
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] BookRequest req, CancellationToken ct)
     {
-        try
+        await _books.UpdateAsync(new BookUpdateDto
         {
-            await _books.UpdateAsync(new BookUpdateDto
-            {
-                Id = id,
-                Title = req.Title,
-                Author = req.Author,
-                ISBN = req.ISBN,
-                PublishedYear = req.PublishedYear
-            }, ct);
-            return NoContent();
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { error = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message, param = ex.ParamName });
-        }
+            Id = id,
+            Title = req.Title,
+            Author = req.Author,
+            ISBN = req.ISBN,
+            PublishedYear = req.PublishedYear
+        }, ct);
+        return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken ct)
     {
-        try
-        {
-            await _books.DeleteAsync(id, ct);
-            return NoContent();
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { error = ex.Message });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Conflict(new { error = ex.Message });
-        }
+        await _books.DeleteAsync(id, ct);
+        return NoContent();
     }
 
     [HttpGet]
