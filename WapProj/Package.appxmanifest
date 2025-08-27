@@ -9,7 +9,7 @@
   <Identity
     Name="33c51d2c-160e-449d-8646-36556333d173"
     Publisher="CN=Bogyi"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <Properties>
     <DisplayName>WapProj</DisplayName>
