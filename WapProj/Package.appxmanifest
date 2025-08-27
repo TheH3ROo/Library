@@ -8,12 +8,12 @@
 
   <Identity
     Name="33c51d2c-160e-449d-8646-36556333d173"
-    Publisher="CN=Bogyi"
+    Publisher="CN=Péter"
     Version="1.0.1.0" />
 
   <Properties>
     <DisplayName>WapProj</DisplayName>
-    <PublisherDisplayName>Bogyi</PublisherDisplayName>
+    <PublisherDisplayName>Péter</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
