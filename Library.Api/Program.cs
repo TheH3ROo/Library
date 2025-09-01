@@ -1,7 +1,7 @@
 using Library.Api.Middleware;
 using Library.Application.Abstractions;
 using Library.Application.Books;
-using Library.Application.Services;
+using Library.Application.Loans;
 using Library.Application.Users;
 using Library.Infrastructure.Data;
 using Library.Infrastructure.Repositories;

@@ -1,6 +1,6 @@
 ﻿using Library.Api.Contracts;
 using Library.Application.Abstractions;
-using Library.Application.Services;
+using Library.Application.Loans;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Api.Controllers
@@ -15,7 +15,6 @@ namespace Library.Api.Controllers
             _loanService = loanService;
         }
 
-        /// <summary>Borrow a book</summary>
         [HttpPost]
         public async Task<IActionResult> Borrow([FromBody] BorrowRequest request, CancellationToken ct)
         {
@@ -23,7 +22,6 @@ namespace Library.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = loanId }, new { LoanId = loanId });
         }
 
-        /// <summary>Return a book</summary>
         [HttpPost("{id:guid}/return")]
         public async Task<IActionResult> Return([FromRoute] Guid id, [FromBody] ReturnRequest request, CancellationToken ct)
         {
@@ -34,7 +32,6 @@ namespace Library.Api.Controllers
             return NoContent();
         }
 
-        /// <summary>List active loans</summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LoanResponse>>> GetActive(CancellationToken ct)
         {
@@ -50,7 +47,6 @@ namespace Library.Api.Controllers
             return Ok(result);
         }
 
-        /// <summary>Get a single loan by id</summary>
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<LoanResponse>> GetById([FromRoute] Guid id, [FromServices] ILoanRepository repo, CancellationToken ct)
         {
