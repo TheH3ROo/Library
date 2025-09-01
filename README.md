@@ -58,7 +58,7 @@ Expected result: all tests should pass ✅
     - Error cases (Book not found, Loan not found)
     - Listing active loans
 - **Domain Layer**
-  - Entities: `Book`, `Loan`
+  - Entities: `Book`, `Loan`, `User`
   - Business logic in `LoanDomain.Borrow` and `LoanDomain.Return`
   - Guard clauses for invalid cases (empty `userId`, `now` in the past/future, unavailable book, etc.)
   - **11 unit tests** (`LoanDomainTests.cs`) covering `Borrow` rules
