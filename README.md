@@ -1,8 +1,9 @@
 # 📖 Library System
 
 ## Overview
-This project is an early implementation of a **Library System** built with **ASP.NET Core**.  
-Development is done using **Test-Driven Development (TDD)**: writing tests first, then adding the minimal implementation.
+This project is an implementation of a **Library System** built with **ASP.NET Core**.  
+Development was intentionally limited to MVP scope and executed with **Test-Driven Development (TDD)**: failing test → minimal implementation → refactor.
+Avoided nonessential features (YAGNI) to move fast.
 
 ---
 
