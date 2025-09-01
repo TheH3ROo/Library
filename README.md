@@ -2,7 +2,7 @@
 
 ## Overview
 This project is an implementation of a **Library System** built with **ASP.NET Core**.  
-Development was intentionally limited to MVP scope and executed with **Test-Driven Development (TDD)**: failing test → minimal implementation → refactor.
+Development was intentionally limited to MVP scope and executed with **Test-Driven Development (TDD)**: failing test → minimal implementation → refactor.  
 Avoided nonessential features (YAGNI) to move fast.
 
 ---
