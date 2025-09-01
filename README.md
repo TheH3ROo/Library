@@ -1,4 +1,4 @@
-# 📖 Library System – README
+# 📖 Library System
 
 ## Overview
 This project is an early implementation of a **Library System** built with **ASP.NET Core**.  
@@ -92,41 +92,41 @@ Library.sln
  │   ├─ Contracts
  │   │   ├─ BooksDtos.cs
  │   │   ├─ LoansDtos.cs
- │   │   ├─ UsersDtos.cs
+ │   │   └─ UsersDtos.cs
  │   ├─ Contollers
  │   │   ├─ BooksController.cs
  │   │   ├─ LoansController.cs
- │   │   ├─ UsersController.cs
+ │   │   └─ UsersController.cs
  │   ├─ Middleware
- │   │   ├─ ProblemDetailsMiddleware.cs
- │   ├─ Program.cs
+ │   │   └─ ProblemDetailsMiddleware.cs
+ │   └─ Program.cs
  │
  ├─ Library.Application
  │   ├─ Abstractions
  │   │   ├─ IBookRepository.cs
- │   │   └─ ILoanRepository.cs
+ │   │   ├─ ILoanRepository.cs
  │   │   └─ IUserRepository.cs
  │   ├─ Books
  │   │   ├─ BookDtos.cs
- │   │   ├─ BookService.cs
+ │   │   └─ BookService.cs
  │   ├─ Loans
- │   │   ├─ LoanService.cs
+ │   │   └─ LoanService.cs
  │   ├─ Users
  │   │   ├─ UserDtos.cs
- │   │   ├─ UserService.cs
+ │   │   └─ UserService.cs
  │
  ├─ Library.Domain
  │   ├─ Book.cs
  │   ├─ Loan.cs
- │   └─ LoanDomain.cs
+ │   ├─ LoanDomain.cs
  │   └─ User.cs
  │
  ├─ Library.Infrastructure
  │   ├─ Data
- │   │   ├─ LibraryDbContext.cs
+ │   │   └─ LibraryDbContext.cs
  │   └─ Repositories
- │       └─ BookRepository.cs
- │       └─ LoanRepository.cs
+ │       ├─ BookRepository.cs
+ │       ├─ LoanRepository.cs
  │       └─ UserRepository.cs
  │
  ├─ Library.Tests
