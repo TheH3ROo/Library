@@ -18,7 +18,7 @@ Avoided nonessential features (YAGNI) to move fast.
 ## How to Run Tests
 1. Clone the repository:
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/TheH3ROo/Library
    cd Library
    ```
 2. Run all tests:
