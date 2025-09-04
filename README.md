@@ -112,9 +112,9 @@ Library.sln
  │   │   └─ BookService.cs
  │   ├─ Loans
  │   │   └─ LoanService.cs
- │   ├─ Users
- │   │   ├─ UserDtos.cs
- │   │   └─ UserService.cs
+ │   └─ Users
+ │       ├─ UserDtos.cs
+ │       └─ UserService.cs
  │
  ├─ Library.Domain
  │   ├─ Book.cs
